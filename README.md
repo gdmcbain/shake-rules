@@ -1,11 +1,7 @@
->>>
-A huge benefit of using an embedded DSL as a build system is that we
-can use the facilities of the host language
-([Haskell](https://haskell.org)) to build abstractions on top of
-[Shake](https://shakebuild.com), to fit our particular use
-case. (Mokhov et al [2016](http://dx.doi.org/10.1145/2976002.2976011),
-§1)
->>>
+> A huge benefit of using an embedded DSL as a build system is that we can use the facilities of the host language ([Haskell](https://haskell.org)) to build abstractions on top of [Shake](https://shakebuild.com), to fit our particular use case
+
+(Mokhov et al [2016](http://dx.doi.org/10.1145/2976002.2976011), §1)
+
 
 
 # Installation
