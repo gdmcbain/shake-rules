@@ -14,4 +14,3 @@ main = shakeArgs shakeOptions $ do
   cleanRules []
 
   "run" ~> cmd "fortune"
-
