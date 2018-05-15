@@ -1,5 +1,5 @@
 name:                shake-rules
-version:             0.1.4.0
+version:             0.2.0.0
 synopsis:            Handy extras for using Shake
 -- description:
 homepage:            https://github.com/gdmcbain/shake-rules
@@ -28,3 +28,4 @@ library
       Development.Shake.Clean
       Development.Shake.Compile
       Development.Shake.Gmsh
+      Development.Shake.LaTeX
