@@ -1,7 +1,6 @@
 > A huge benefit of using an embedded DSL as a build system is that we can use the facilities of the host language ([Haskell](https://haskell.org)) to build abstractions on top of [Shake](https://shakebuild.com), to fit our particular use case
 
-(Mokhov et al [2016](http://dx.doi.org/10.1145/2976002.2976011), §1)
-
+(Mokhov, A., N. Mitchell, S. Peyton Jones, & S. Marlow 2016. [Non-recursive Make considered harmful: build systems at scale](http://dx.doi.org/10.1145/2976002.2976011). In _Proceedings of the 9th International Symposium on Haskell—Haskell 2016,_ pp. 170–181. ACM Press. §1)
 
 
 # Installation
