@@ -28,8 +28,9 @@ stack install hlint
 
 ```shell
 cd ~/src  # or wherever
-git clone https://github.com/gdmcbain/shake-rules.git
 ```
+
+Then `git-clone` this repository.
 
 Then edit the `packages` field of `~/.stack/global-project/stack.yaml` to contain a relative path to the installation:
 ```yaml
