@@ -16,7 +16,7 @@ import Development.Shake.Compile
 clean :: [FilePattern] -> Rules ()
 clean patterns = "clean" ~> do
   need ["hlint", "PEP-8"]   -- see cleanRules
-  removeFilesAfter "." (["*~"] ++ patterns)
+  removeFilesAfter "." $ "*~" : patterns
 
 hlint :: Rules ()
 hlint = "hlint" ~> cmd "hlint" "."
