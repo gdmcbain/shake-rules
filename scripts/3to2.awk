@@ -10,8 +10,6 @@
 ## to 2 and the z-coordinate stripped from each vertex.  This is the
 ## format FreeFem++ wants for its readmesh command.
 
-## Examples: msmdir.000708
-
 BEGIN { 
   dimension = 0;		# flag for processing Dimension
   vertices = 0;			# number of vertices to process
