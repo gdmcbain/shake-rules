@@ -1,53 +1,54 @@
-module Development.Shake.Gmsh (gmshRules, Dimension(..)) where
-    import Development.Shake
-    import Development.Shake.FilePath
-
-{- To use this, just import Development.Shake.Gmsh and put, e.g.,
- -
- -     gmshRules TwoD
- -
- - under the "do" in the main in the Build.hs script.  gmshRules needs the
- - Dimension.
+{-|
+  To use this, just import Development.Shake.Gmsh and put, e.g.,
+ 
+      gmshRules TwoD
+ 
+  under the "do" in the main in the Build.hs script.  gmshRules needs the
+  Dimension.
  -}
 
-    data Dimension = ZeroD | OneD | TwoD | ThreeD deriving Enum
+module Development.Shake.Gmsh (gmshRules, Dimension(..)) where
+import Development.Shake
+import Development.Shake.FilePath
 
-    instance Show Dimension where
-      show = ('-' :) . show . fromEnum
+data Dimension = ZeroD | OneD | TwoD | ThreeD deriving Enum
 
-    msh :: Dimension -> Rules ()
-    msh d = "*.msh" %> \msh -> do
-      let geo = msh -<.> "geo"
-      need [geo]
-      gmshFlags <- getEnv "GMSHFLAGS"
-      cmd "gmsh" (show d) gmshFlags [geo]
+instance Show Dimension where
+  show = ('-' :) . show . fromEnum
 
-    medit :: Dimension -> Rules ()
-    medit d = "*.medit" %> \out -> do
-      let geo = out -<.> "geo"
-      need [geo]
-      gmshFlags <- getEnv "GMSHFLAGS"
-      cmd "gmsh" (show d) gmshFlags
-        "-format" "mesh" "-string" "Mesh.SaveElementTagType=2;"
-        "-o" [out] [geo] :: Action ()
-      removeFilesAfter "." [out]
+msh :: Dimension -> Rules ()
+msh d = "*.msh" %> \msh -> do
+  let geo = msh -<.> "geo"
+  need [geo]
+  gmshFlags <- getEnv "GMSHFLAGS"
+  cmd "gmsh" (show d) gmshFlags [geo]
 
-    mesh :: Dimension -> Rules ()
+medit :: Dimension -> Rules ()
+medit d = "*.medit" %> \out -> do
+  let geo = out -<.> "geo"
+  need [geo]
+  gmshFlags <- getEnv "GMSHFLAGS"
+  cmd "gmsh" (show d) gmshFlags
+    "-format" "mesh" "-string" "Mesh.SaveElementTagType=2;"
+    "-o" [out] [geo] :: Action ()
+  removeFilesAfter "." [out]
 
-    mesh ThreeD = "*.mesh" %> \mesh -> do
-      let medit = mesh -<.> "medit"
-      need [medit]
-      copyFileChanged mesh medit
+mesh :: Dimension -> Rules ()
 
-    mesh TwoD = "*.mesh" %> \mesh -> do
-      let medit = mesh -<.> "medit"
-          script = "3to2.awk"   -- must be on AWKPATH
-      need [medit]
-      Stdout stdout <- cmd "gawk" "-f" script [medit]
-      writeFileChanged mesh stdout
+mesh ThreeD = "*.mesh" %> \mesh -> do
+  let medit = mesh -<.> "medit"
+  need [medit]
+  copyFileChanged mesh medit
 
-    gmshRules :: Dimension -> Rules()
-    gmshRules d = do
-      msh d
-      medit d
-      mesh d
+mesh TwoD = "*.mesh" %> \mesh -> do
+  let medit = mesh -<.> "medit"
+      script = "3to2.awk"   -- must be on AWKPATH
+  need [medit]
+  Stdout stdout <- cmd "gawk" "-f" script [medit]
+  writeFileChanged mesh stdout
+
+gmshRules :: Dimension -> Rules()
+gmshRules d = do
+  msh d
+  medit d
+  mesh d
