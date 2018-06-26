@@ -13,29 +13,6 @@ stack install shake
 
 # Installing this repository of extras for Shake
 
-## git
-
-Get [git](https://git-scm.com).
-
-### Installing a new git under Debian GNU/Linux using an old one
-
-It is often the case that there is a [git](https://git-scm.com)
-available on the system but that it is quite old.  In this case, one
-approach is to install your own git using that one.
-
-```shell
-sudo aptitude update
-sudo aptitude install asciidoc autoconf docbook2x dblatex libsvn-perl
-cd ~/src  # or wherever
-git clone https://github.com/git/git.git
-cd git
-make configure
-./configure --prefix=$HOME/.local
-make -j4 all
-make install
-hash -r
-```
-
 ### Installing other utilities
 
 Our standard [`Build.hs`](Build.hs) Shake script defines
