@@ -1,9 +1,9 @@
 name:                shake-rules
-version:             0.2.0.0
+version:             0.2.0.1
 synopsis:            Handy extras for using Shake
 -- description:
 homepage:            https://github.com/gdmcbain/shake-rules
-license:             AllRightsReserved
+license:             BSD3
 license-file:        LICENSE
 author:              G. D. McBain <gdmcbain@protonmail.com>
 maintainer:          G. D. McBain <gdmcbain@protonmail.com>
