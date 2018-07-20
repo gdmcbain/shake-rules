@@ -31,7 +31,7 @@ bibs :: Rules ()
 bibs = "*.bib" %> \bib -> do
   let dir = "bibtex"
   bibs <- getDirectoryFiles "" [dir </> "*.bib"]
-  Stdout out <- cmd "cat" bibs
+  Stdout out <- cmd (Stdin "") "cat" $ "-" : bibs
   writeFileChanged bib out
 
 latexRules :: [FilePath] -> Rules ()
