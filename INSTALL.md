@@ -16,8 +16,8 @@ stack install shake
 ### Installing other utilities
 
 Our standard [`Build.hs`](Build.hs) Shake script defines
-[`cleanRule`](Development/Shake/Clean.hs) which invokes `flake8` and
-`hlint`.  To install these:
+[`cleanRule`](Development/Shake/Clean.hs) which invokes `flake8` (for
+Python) and `hlint`.  To install these:
 
 ```shell
 pip install flake8
@@ -31,6 +31,23 @@ cd ~/src  # or wherever
 ```
 
 Then `git-clone` this repository.
+
+### Using elsewhere without installing
+
+To use elsewhere, create a local `stack.yaml` file containing
+
+```yaml
+packages:
+  - ./shake-rules
+```
+
+and create a local symbolic link to the source tree.
+
+```shell
+ln -s ~/src/shake-rules .
+```
+
+### Installing into Stack's ‘global’ project
 
 Then edit the `packages` field of `~/.stack/global-project/stack.yaml` to contain a relative path to the installation:
 ```yaml
