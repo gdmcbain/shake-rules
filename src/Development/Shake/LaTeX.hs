@@ -3,11 +3,17 @@ module Development.Shake.LaTeX (latexRules) where
 import Development.Shake
 import Development.Shake.FilePath
 
-rubber :: Rules ()
-rubber = "*.pdf" %> \pdf -> do
-  let [src, bbl] = map (pdf -<.>) ["tex", "bbl"]
-  need [src, bbl]
-  cmd "rubber" "-d" src
+dvipdf :: [FilePath] -> Rules ()
+dvipdf figures = "*.pdf" %> \pdf -> do
+  let dvi = pdf -<.> "dvi"
+  need $ dvi : figures
+  cmd "dvipdf" dvi
+
+rubber :: [FilePath] -> Rules ()
+rubber figures = "*.dvi" %> \dvi -> do
+  let [src, bbl] = map (dvi -<.>) ["tex", "bbl"]
+  need $ src : bbl : figures
+  cmd "rubber" src
 
 aux :: Rules ()
 aux = "*.aux" %> \aux -> do
@@ -28,9 +34,10 @@ bibs = "*.bib" %> \bib -> do
   Stdout out <- cmd "cat" $ map (dir </>) bibs
   writeFileChanged bib out
 
-latexRules :: Rules ()
-latexRules = do
-  rubber
+latexRules :: [FilePath] -> Rules ()
+latexRules figures = do
+  dvipdf figures
+  rubber figures
   aux
   bibtex
   bibs
