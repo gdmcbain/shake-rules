@@ -30,6 +30,7 @@ bibtex = "*.bbl" %> \bbl -> do
 bibs :: Rules ()
 bibs = "*.bib" %> \bib -> do
   let dir = "bibtex"
+  need [dir]
   bibs <- getDirectoryFiles dir ["*.bib"]
   Stdout out <- cmd "cat" $ map (dir </>) bibs
   writeFileChanged bib out
