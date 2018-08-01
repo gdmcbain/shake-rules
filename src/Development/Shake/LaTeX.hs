@@ -3,22 +3,22 @@ module Development.Shake.LaTeX (latexRules) where
 import Development.Shake
 import Development.Shake.FilePath
 
-dvipdf :: [FilePath] -> Rules ()
-dvipdf figures = "*.pdf" %> \pdf -> do
+dvipdf :: Rules ()
+dvipdf = "*.pdf" %> \pdf -> do
   let dvi = pdf -<.> "dvi"
-  need $ dvi : figures
+  need [dvi]
   cmd "dvipdf" dvi
 
-rubber :: [FilePath] -> Rules ()
-rubber figures = "*.dvi" %> \dvi -> do
+rubber :: Rules ()
+rubber = "*.dvi" %> \dvi -> do
   let [src, bbl] = map (dvi -<.>) ["tex", "bbl"]
-  need $ src : bbl : figures
+  need [src, bbl]
   cmd "rubber" src
 
-aux :: Rules ()
-aux = "*.aux" %> \aux -> do
+aux :: [FilePath] -> Rules ()
+aux figures = "*.aux" %> \aux -> do
   let tex = aux -<.> "tex"
-  need [tex]
+  need $ tex : figures
   cmd "latex" tex
 
 bibtex :: Rules ()
@@ -34,10 +34,17 @@ bibs = "*.bib" %> \bib -> do
   Stdout out <- cmd (Stdin "") "cat" $ "-" : bibs
   writeFileChanged bib out
 
+-- asymptote :: Rules ()
+-- asymptote = "*.eps" %> \eps -> do
+--   let asy = eps -<.> "asy"
+--   need [asy]
+--   cmd "asy" asy
+
 latexRules :: [FilePath] -> Rules ()
 latexRules figures = do
-  dvipdf figures
-  rubber figures
-  aux
+  dvipdf
+  rubber
+  aux figures
   bibtex
   bibs
+  -- asymptote
