@@ -24,21 +24,21 @@ msh d = "*.msh" %> \msh -> do
   cmd "gmsh" (show d) gmshFlags [geo]
 
 medit :: Dimension -> Rules ()
-medit d = "*.medit" %> \out -> do
-  let geo = out -<.> "geo"
+medit d = "*.medit" %> \medit -> do
+  let geo = medit -<.> "geo"
   need [geo]
   gmshFlags <- getEnv "GMSHFLAGS"
   cmd "gmsh" (show d) gmshFlags
     "-format" "mesh" "-string" "Mesh.SaveElementTagType=2;"
-    "-o" [out] [geo] :: Action ()
-  removeFilesAfter "." [out]
+    "-o" [medit] [geo] :: Action ()
+  removeFilesAfter "." [medit]
 
 mesh :: Dimension -> Rules ()
 
 mesh ThreeD = "*.mesh" %> \mesh -> do
   let medit = mesh -<.> "medit"
   need [medit]
-  copyFileChanged mesh medit
+  copyFileChanged medit mesh
 
 mesh TwoD = "*.mesh" %> \mesh -> do
   let medit = mesh -<.> "medit"
